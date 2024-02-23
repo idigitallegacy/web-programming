@@ -1,0 +1,186 @@
+html, body {
+    overflow-x: hidden;
+    padding: 0;
+    width: 100%;
+    font-family: Calibri;
+    color: #111;
+}
+
+a {
+    text-decoration: none;
+    color: #4444af;
+}
+
+section {
+    margin: 50px 0;
+}
+
+a:visited {
+    color: #4444af;
+    text-decoration: none;
+}
+
+header, footer {
+    width: 100vw;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+header {
+    background: #fff;
+    position: fixed;
+    top:0;
+    left: 0;
+}
+
+@media screen and (max-width: 800px) {
+    header {
+        display: none;
+    }
+}
+
+.header-logo {
+    height: 74px;
+    width: 74px;
+}
+
+.header-logo-img {
+    width: 100%;
+    height: 100%;
+    background: url("abc.png") no-repeat center center;
+    background-size: contain;
+}
+
+.header-nav, .main-nav {
+    width: 60vw;
+}
+
+.header-nav-ul, .main-nav-ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+}
+
+.header-nav-ul li {
+    padding: 5px 10px;
+}
+
+.header-nav-ul .active {
+    border: none;
+    border-bottom: 2px solid #ff00ff;
+}
+
+.header-nav-ul li:hover {
+    border: 2px solid #42fe;
+}
+
+
+
+
+
+
+
+main {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.main-pagename {
+    text-decoration: underline;
+}
+
+.main-nav {
+    background: #333;
+    border-radius: 10000px;
+    margin: 0 auto;
+    padding: 5px 0;
+}
+
+.main-nav a {
+    color: #fff;
+}
+
+.main-nav .main-nav-li-active {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.main-content-item {
+    width: 25%;
+    border: 1px solid #333;
+    padding: 10px 5px;
+    margin: 20px 0;
+}
+
+.main-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.personal-info {
+    font-size: 120%;
+}
+
+.direct {
+    width: 20%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.table-wrap {
+    text-align: center;
+    display: inline-block;
+    background-color: #fff;
+    color: #000;
+    width: 100%;
+}
+
+.table-wrap table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+    border: 2px solid green;
+}
+
+.table-wrap table tr {
+    background: #333;
+    color: #fff;
+}
+
+.table-wrap table td {
+    padding: 5px 10px;
+    border: 2px solid green;
+}
+
+.table-wrap table tr:nth-child(even) {
+    background: #444;
+}
+
+@media screen and (max-width: 800px) {
+    .table-wrap {
+        overflow-y: scroll;
+    }
+}
+
+
+
+
+footer {
+    width: 100%;
+}
+
+.footer-nav-ul {
+    width: 80%;
+    margin: 0 auto;
+    list-style: none;
+    text-align: center;
+}
+
+.footer-nav-ul li a {
+    color: #4444af;
+}
