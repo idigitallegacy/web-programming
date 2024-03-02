@@ -1,9 +1,9 @@
 let nav_items_selector = ".header-nav .header-nav-ul li"
 
 let nav_items_ids = {
-    "/Webdev23/index.html": "home",
-    "/Webdev23/about.html": "about",
-    "/Webdev23/contact.html": "contact"
+    "/index.html": "home",
+    "/about.html": "about",
+    "/contact.html": "contact"
 }
 
 let active_nav_item_selector = "active"
