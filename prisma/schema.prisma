@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model posts {
+  id             Int        @id @default(autoincrement())
+  picture_link   String?    @db.VarChar(1024)
+  title          String     @db.VarChar(100)
+  body_json_link String     @db.VarChar(1024)
+  date           DateTime   @db.Date
+  author_id      Int?
+  comments       comments[]
+  users          users?     @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_contacts {
+  id      Int     @id @default(autoincrement())
+  user_id Int?
+  email   String? @db.VarChar(100)
+  phone   String? @db.VarChar(20)
+  phone2  String? @db.VarChar(20)
+  address String? @db.VarChar(200)
+  users   users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_groups {
+  id         Int     @id @default(autoincrement())
+  group_name String? @db.VarChar(255)
+  users      users[]
+}
+
+model users {
+  id            Int             @id @default(autoincrement())
+  username      String          @db.VarChar(25)
+  password      String          @db.VarChar(255)
+  is_active     Boolean?        @default(true)
+  group         Int?
+  comments      comments[]
+  posts         posts[]
+  user_contacts user_contacts[]
+  user_groups   user_groups?    @relation(fields: [group], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model comments {
+  id     Int      @id @default(autoincrement())
+  post   Int
+  author Int
+  date   DateTime @db.Date
+  text   String   @db.VarChar(1000)
+  users  users    @relation(fields: [author], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts  posts    @relation(fields: [post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
