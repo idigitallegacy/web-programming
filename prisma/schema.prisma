@@ -11,7 +11,7 @@ model posts {
   id             Int        @id @default(autoincrement())
   picture_link   String?    @db.VarChar(1024)
   title          String     @db.VarChar(100)
-  body_json_link String     @db.VarChar(1024)
+  body           String     @db.VarChar(4194304)
   date           DateTime   @db.Date
   author_id      Int?
   comments       comments[]
@@ -30,13 +30,13 @@ model user_contacts {
 
 model user_groups {
   id         Int     @id @default(autoincrement())
-  group_name String? @db.VarChar(255)
+  group_name String? @db.VarChar(255) @unique
   users      users[]
 }
 
 model users {
   id            Int             @id @default(autoincrement())
-  username      String          @db.VarChar(25)
+  username      String          @db.VarChar(25) @unique
   password      String          @db.VarChar(255)
   is_active     Boolean?        @default(true)
   group         Int?

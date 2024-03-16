@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { PostsController } from "./posts/posts.controller";
+import { UsersController } from "./users/users.controller";
 
 @Injectable()
 export class AppService {
@@ -28,7 +30,6 @@ export class AppService {
       "      <li data-id=\"home\"><a href=\"./\">Главная</a></li>\n" +
       "      <li data-id=\"about\"><a href=\"about\">Обо мне</a></li>\n" +
       "      <li data-id=\"contact\"><a href=\"contact\">Контакты</a></li>\n" +
-      "      <li data-id=\"constructor\"><a href=\"constructor\">Конструктор todo</a></li>\n" +
       "    </ul>\n" +
       "  </nav>\n" +
       "</header>"
@@ -46,105 +47,64 @@ export class AppService {
       "  </nav>"
   }
 
-  getIndexPageContent() {
+  async getIndexPageContent() {
     let content_open_tag = "  <section class=\"main-content\">\n";
     let content_close_tag = "   </section>";
 
     let content = content_open_tag + '\n';
-    content += "    <article class=\"main-content-item\">\n" +
-      "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
-      "      <p class=\"main-content-item-des\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n" +
-      "      <code>asd.add(el);</code>\n" +
-      "    </article>\n" +
-      "    <article class=\"main-content-item\">\n" +
-      "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
-      "      <p class=\"main-content-item-des\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n" +
-      "      <code>asd.add(el);</code>\n" +
-      "    </article>\n" +
-      "    <article class=\"main-content-item\">\n" +
-      "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
-      "      <p class=\"main-content-item-des\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n" +
-      "      <code>asd.add(el);</code>\n" +
-      "    </article>\n" +
-      "    <article class=\"main-content-item\">\n" +
-      "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
-      "      <p class=\"main-content-item-des\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n" +
-      "      <code>asd.add(el);</code>\n" +
-      "    </article>\n" +
-      "    <article class=\"main-content-item\">\n" +
-      "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
-      "      <p class=\"main-content-item-des\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n" +
-      "      <code>asd.add(el);</code>\n" +
-      "    </article>\n" +
-      "    <article class=\"main-content-item\">\n" +
-      "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
-      "      <p class=\"main-content-item-des\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n" +
-      "      <code>asd.add(el);</code>\n" +
-      "    </article>\n" +
-      "  <div class=\"table-wrap\">\n" +
-      "    <table>\n" +
-      "      <thead>\n" +
-      "      <tr>\n" +
-      "        <th>Услуга</th>\n" +
-      "        <th>Описание</th>\n" +
-      "        <th>Цена</th>\n" +
-      "        <th>Скидка</th>\n" +
-      "      </tr>\n" +
-      "      </thead>\n" +
-      "      <tbody>\n" +
-      "      <tr>\n" +
-      "        <td>Мобильная верстка</td>\n" +
-      "        <td>Верстка под телефоны</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>50%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Посадка на CMS WordPress</td>\n" +
-      "        <td>Создание сайта с админ. панелью</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>30%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Мобильная верстка</td>\n" +
-      "        <td>Верстка под телефоны</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>50%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Посадка на CMS WordPress</td>\n" +
-      "        <td>Создание сайта с админ. панелью</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>30%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Мобильная верстка</td>\n" +
-      "        <td>Верстка под телефоны</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>50%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Посадка на CMS WordPress</td>\n" +
-      "        <td>Создание сайта с админ. панелью</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>30%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Мобильная верстка</td>\n" +
-      "        <td>Верстка под телефоны</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>50%</td>\n" +
-      "      </tr>\n" +
-      "      <tr>\n" +
-      "        <td>Посадка на CMS WordPress</td>\n" +
-      "        <td>Создание сайта с админ. панелью</td>\n" +
-      "        <td>$3000</td>\n" +
-      "        <td>30%</td>\n" +
-      "      </tr>\n" +
-      "      </tbody>\n" +
-      "    </table>\n" +
-      "  </div>";
-    content += content_close_tag;
+
+    const postsPerPage = 10
+    const postsController = new PostsController()
+    const postsAmount = await postsController.getAmount()
+    const pagesAmount = Math.ceil(postsAmount / postsPerPage);
+
+    // TODO: add a pagination
+    for (let offset = 0; offset < Math.min(postsAmount, postsPerPage); ++offset) {
+      content += "<div class=\"card\">\n" +
+        "<div class=\"content\">" +
+        "      <h3 class=\"main-content-item-header\">Lorem ipsum</h3>\n" +
+        "      <p class=\"copy\">Check out all of these gorgeous mountain trips with beautiful views of, you guessed it, the mountains</p>\n" +
+        "<button class=\"btn\">View Trips</button>" +
+        "    </div>" +
+        "</div>\n"
+    }
+    //
+    // content += content_close_tag;
+    // console.log(content)
     return content;
+  }
+
+  async getPostPageContent(id: number) {
+    const postsController = new PostsController()
+    const usersController = new UsersController()
+
+    const post = await postsController.findById(id)
+    const postTitle = post.title
+    const postDate = post.date
+    const postAuthor = await usersController.findById(post.author_id)
+    const postPictureLink = post.picture_link
+    const postBody = post.body
+
+    console.log(postBody)
+
+    return "  <div class=\"container\">\n" +
+      "    <div class=\"post\">\n" +
+      "      <div class=\"post-image\">\n" +
+      "        <img src=\"" + postPictureLink + "\">\n" +
+      "      </div>\n" +
+      "      <div class=\"post-content\">\n" +
+      "        <div class=\"post-header\">\n" +
+      "          <h1>" + postTitle + "</h1>\n" +
+      "          <div class=\"post-meta\">\n" +
+      "            <time datetime=\"" + postDate + "\">" + postDate + "</time>\n" +
+      "            <span class=\"author\">" + postAuthor.username + "</span>\n" +
+      "          </div>\n" +
+      "        </div>\n" +
+      "        <p> " + postBody + "" +
+      "        </p>\n" +
+      "      </div>\n" +
+      "    </div>\n" +
+      "  </div>"
   }
 
   getAboutPageContent() {
