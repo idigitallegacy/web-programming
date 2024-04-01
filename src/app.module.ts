@@ -7,7 +7,7 @@ import { CommentsModule } from "./comments/comments.module";
 import * as process from "process";
 
 @Module({
-  imports: [UsersModule, PostsModule, CommentsModule, AuthModule],
+  imports: [UsersModule, PostsModule, CommentsModule],
   controllers: [AppController],
   providers: [AppService],
 })
