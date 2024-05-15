@@ -1,0 +1,16 @@
+.news-wrapper {
+    display: block;
+    width: 100%;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 60px;
+    grid-row-gap: 40px;
+}
+
+.news-pagination {
+    align-items: center;
+    justify-content: center;
+}

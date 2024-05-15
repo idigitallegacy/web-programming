@@ -1,0 +1,12 @@
+.wrapper{
+    display: flex;
+    place-items: center;
+    max-width: 80vw;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+}
+
+.inline {
+    display: inline-flex;
+}
