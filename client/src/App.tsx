@@ -9,18 +9,18 @@ import AddPost from "./components/add_post";
 function App() {
   let environment = import.meta.env.VITE_ENVIRONMENT
 
-  let server = "";
+  let server = "http://localhost:3000/api"
 
-  switch (environment) {
-    case "DEV" : {
-      server = "http://localhost:3000/api"
-      break
-    }
-
-    case "PROD": {
-      server = "https://web-y25-makarov.onrender.com:3000/api"
-    }
-  }
+  // switch (environment) {
+  //   case "DEV" : {
+  //     server = "http://localhost:3000/api"
+  //     break
+  //   }
+  //
+  //   case "PROD": {
+  //     server = "https://web-y25-makarov.onrender.com:3000/api"
+  //   }
+  // }
 
   const authManager = new AuthManager(server)
 
