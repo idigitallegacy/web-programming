@@ -45,7 +45,6 @@ function NewsCollection(props: NewsCollectionProps) {
 
         const date = new Date(response[i].date);
         const formattedTime = date.getUTCDate() + "/" + date.getUTCMonth() + "/" + date.getUTCFullYear();
-        console.log(response[i])
         setNewsItems(newsItems => [...newsItems, <NewsItem key={response[i].id} postId={response[i].id} picture_link={newsItemPicture} title={response[i].title} body={response[i].body} date={formattedTime} author={"asdf"}></NewsItem>])
       }
 
