@@ -19,6 +19,8 @@ function Header(props: HeaderProps) {
   const [userId, setUserId] = useState("")
 
   const request = async () => {
+    console.log(props.auth_manager.vk_checkIfAuthorized())
+    console.log(document.cookie)
     if (props.auth_manager.vk_checkIfAuthorized()) {
       const credentials = await props.auth_manager.vk_getCredentials()
 
