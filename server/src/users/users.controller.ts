@@ -89,7 +89,7 @@ export class UsersController {
               break
             }
             case "PROD": {
-              response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, secure: true, httpOnly: true, domain: "https://web-y25-makarov.onrender.com/", path: "/" });
+              response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, secure: true, httpOnly: true, domain: ".onrender.com/", path: "/" });
               break
             }
           }
