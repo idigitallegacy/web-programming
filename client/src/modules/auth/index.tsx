@@ -4,9 +4,22 @@ import * as VKID from "@vkid/sdk";
 import { useEffect } from "react";
 
 function Auth() {
+  let redirectUrl;
+
+  switch (process.env.ENVIRONMENT) {
+    case "DEV": {
+      redirectUrl = 'http://localhost'
+      break
+    }
+
+    case "PROD": {
+      redirectUrl = 'https://web-y25-makarov.onrender.com'
+      break
+    }
+  }
   VKID.Config.set({
     app: 51911097, // Идентификатор приложения.
-    redirectUrl: 'http://localhost', // Адрес для перехода после авторизации.
+    redirectUrl: redirectUrl, // Адрес для перехода после авторизации.
     state: 'dj29fnsadjsd82...' // Произвольная строка состояния приложения.
   })
 

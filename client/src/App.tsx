@@ -7,7 +7,20 @@ import AuthManager from "./scripts/auth_manager/auth_manager.ts";
 import AddPost from "./components/add_post";
 
 function App() {
-  const server = "http://localhost:3000/api"
+  let environment = process.env.ENVIRONMENT
+
+  let server = "";
+
+  switch (environment) {
+    case "DEV" : {
+      server = "http://localhost:3000/api"
+      break
+    }
+
+    case "PROD": {
+      server = "https://web-y25-makarov.onrender.com:3000/api"
+    }
+  }
 
   const authManager = new AuthManager(server)
 
