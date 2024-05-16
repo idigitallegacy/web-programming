@@ -7,7 +7,7 @@ import AuthManager from "./scripts/auth_manager/auth_manager.ts";
 import AddPost from "./components/add_post";
 
 function App() {
-  let environment = process.env.ENVIRONMENT
+  let environment = import.meta.env.VITE_ENVIRONMENT
 
   let server = "";
 
