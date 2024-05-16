@@ -6,7 +6,7 @@ import { useEffect } from "react";
 function Auth() {
   let redirectUrl;
 
-  switch (process.env.ENVIRONMENT) {
+  switch (import.meta.env.VITE_ENVIRONMENT) {
     case "DEV": {
       redirectUrl = 'http://localhost'
       break
