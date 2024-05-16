@@ -83,7 +83,7 @@ export class UsersController {
             console.log(exchangedToken.error.error_msg)
           }
 
-          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, secure: false, sameSite: "none" });
+          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, domain: "web-y25-makarov.onrender.com", httpOnly: false, secure: false, sameSite: "lax" });
 
           let user = await this.prisma.users.findUnique({
             where: {
