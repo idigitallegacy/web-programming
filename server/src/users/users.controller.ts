@@ -63,6 +63,7 @@ export class UsersController {
   @ApiOperation({ summary: "Get user by id" })
   async checkIfAuthorized(@Req() request: Request, @Res() response: Response, @Query("auth_origin") auth_origin: string) {
     console.log(request.cookies)
+
     switch (auth_origin) {
       case "vk" : {
         if (!request.cookies["vk_access_token"]) {
