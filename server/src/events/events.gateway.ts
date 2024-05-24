@@ -11,7 +11,7 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost',
+    origin: 'https://web-y25-makarov.onrender.com/',
   },
 })
 export class EventsGateway {
