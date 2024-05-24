@@ -124,7 +124,8 @@ export class UsersController {
   }
 
   @Get("authorize?")
-  async exchangeToken(@Req() request: Request, @Res() response: Response, @Query("method") method: string, @Query("token") token?: string, @Query("uuid") uuid?: string, @Query("access_token") access_token?: string) {
+  async authorize(@Req() request: Request, @Res() response: Response, @Query("method") method: string, @Query("token") token?: string, @Query("uuid") uuid?: string, @Query("access_token") access_token?: string) {
+    console.log(request.cookies)
     switch (method) {
       case "vk": {
         if (!token || !uuid) {
@@ -148,7 +149,7 @@ export class UsersController {
             console.log(exchangedToken.error.error_msg)
           }
 
-          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in});
+          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, domain: "web-y25-makarov.onrender.com"});
 
           let user = await this.prisma.users.findUnique({
             where: {
