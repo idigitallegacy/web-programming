@@ -19,6 +19,7 @@ import { HttpService } from "@nestjs/axios";
 import { map } from "rxjs";
 import { TokenDto } from "./dto/token.dto";
 import * as process from "process";
+import { EventsModule } from "../events/events.module";
 
 @ApiBearerAuth()
 @ApiTags("Users")
@@ -58,6 +59,70 @@ export class UsersController {
     });
   }
 
+  @Get("/is_authorized?")
+  @ApiOperation({ summary: "Get user by id" })
+  async checkIfAuthorized(@Req() request: Request, @Res() response: Response, @Query("auth_origin") auth_origin: string) {
+    switch (auth_origin) {
+      case "vk" : {
+        if (!request.cookies["vk_access_token"]) {
+          response.write("false")
+          response.send()
+          return
+        }
+        let request_string = "https://api.vk.com/method/account.getProfileInfo" +
+          "?v=" + +this.api_ver +
+          "&access_token=" + request.cookies["vk_access_token"]
+        this.httpService.get(request_string).pipe(
+          map(r => r.data)
+        ).subscribe(async (userInfo) => {
+          if (userInfo.error)
+            response.write("false")
+          else if (userInfo.response)
+            response.write("true")
+          else
+            response.write("error")
+          response.send()
+        })
+      }
+    }
+  }
+
+  @Get("/exit?")
+  @ApiOperation({ summary: "Get user by id" })
+  async exit(@Req() request: Request, @Res() response: Response, @Query("auth_origin") auth_origin: string) {
+    switch (auth_origin) {
+      case "vk" : {
+        response.cookie("vk_access_token", "", {maxAge: 0})
+        if (!request.cookies["vk_access_token"]) {
+          response.write(JSON.stringify({username: "undefined"}))
+          response.send()
+          return
+        }
+
+        let request_string = "https://api.vk.com/method/account.getProfileInfo" +
+          "?v=" + +this.api_ver +
+          "&access_token=" + request.cookies["vk_access_token"];
+
+        this.httpService.get(request_string).pipe(
+          map(r => r.data)
+        ).subscribe(async (userInfo) => {
+          if (userInfo.error)
+            response.write(JSON.stringify({ username: "undefined" }))
+          else if (userInfo.response) {
+            let user = await this.prisma.users.findUnique({
+              where: {
+                id: Number(userInfo.response.id)
+              }
+            });
+            response.write(JSON.stringify({ username: user.username }))
+          } else
+            response.write(JSON.stringify({ username: "undefined" }))
+          response.send()
+        })
+      }
+    }
+  }
+
   @Get("authorize?")
   async exchangeToken(@Req() request: Request, @Res() response: Response, @Query("method") method: string, @Query("token") token?: string, @Query("uuid") uuid?: string, @Query("access_token") access_token?: string) {
     switch (method) {
@@ -83,7 +148,7 @@ export class UsersController {
             console.log(exchangedToken.error.error_msg)
           }
 
-          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, domain: "web-y25-makarov.onrender.com", httpOnly: false, secure: false, sameSite: "lax" });
+          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in});
 
           let user = await this.prisma.users.findUnique({
             where: {

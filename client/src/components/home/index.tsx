@@ -7,10 +7,14 @@ import Auth_manager from "../../scripts/auth_manager/auth_manager.ts";
 import { useEffect } from "react";
 import auth_manager from "../../scripts/auth_manager/auth_manager.ts";
 import NewsControls from "../../modules/news/news_controls";
+import { io } from "socket.io-client";
+import EventsLogger from "../../modules/common/events_logger";
+
 
 
 export type HomeProps = {
-  serverURL: string
+  serverURL: string,
+  eventsURL: string,
   auth_manager: Auth_manager
 }
 
@@ -33,6 +37,7 @@ function Home(props: HomeProps) {
 
   return (
     <>
+      <EventsLogger eventsURL={props.eventsURL}></EventsLogger>
       <Header serverURL={props.serverURL} auth_manager={props.auth_manager}></Header>
       <Content wrap={true}>
         <NewsControls auth_manager={props.auth_manager}></NewsControls>

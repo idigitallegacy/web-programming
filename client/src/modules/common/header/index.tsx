@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Auth from "../../auth";
 import Auth_manager from "../../../scripts/auth_manager/auth_manager.ts";
+import Badge from "../../badge";
 
 export type HeaderProps = {
   serverURL: string
@@ -15,22 +16,24 @@ export type HeaderProps = {
 function Header(props: HeaderProps) {
   const navigate = useNavigate();
 
+  const [authorized, setAuthorized] = useState(false)
   const [username, setUsername] = useState("")
   const [userId, setUserId] = useState("")
+  const [open, setOpen] = React.useState(false);
 
-  const request = async () => {
-    console.log(props.auth_manager.vk_checkIfAuthorized())
-    console.log(document.cookie)
-    if (props.auth_manager.vk_checkIfAuthorized()) {
+  const checkIfAuthorized = async () => {
+    const is_authorized = await props.auth_manager.vk_checkIfAuthorized()
+    setAuthorized(is_authorized)
+
+    if (is_authorized) {
       const credentials = await props.auth_manager.vk_getCredentials()
-
       setUsername(credentials.username)
       setUserId(credentials.id)
     }
   }
 
   useEffect(() => {
-    request()
+    checkIfAuthorized()
   }, []);
 
 
@@ -47,29 +50,6 @@ function Header(props: HeaderProps) {
     }
   }
 
-  const [open, setOpen] = React.useState(false);
-
-  if (!props.auth_manager.vk_checkIfAuthorized()) {
-    return (
-      <ElementWrapper>
-        <Tabs
-          activeTab="first"
-          className={"header-menu"}
-          items={[
-            { id: 'home', title: 'Главная' },
-            { id: 'about', title: 'Обо мне' },
-          ]}
-          onSelectTab={navigationCallback}
-        />
-        <Button onClick={() => setOpen(true)}>Вход</Button>
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <Auth></Auth>
-        </Modal>
-      </ElementWrapper>
-    )
-  }
-
-
   return (
     <ElementWrapper>
       <Tabs
@@ -82,10 +62,20 @@ function Header(props: HeaderProps) {
         onSelectTab={navigationCallback}
       />
 
-      <User avatar={{text: username, theme: 'brand'}} description={"id: " + userId} name={username} size="m" />
-    </ElementWrapper>
 
-  )
+      <Button onClick={() => setOpen(true)} style={{display: authorized ? "none" : "block"}}>Вход</Button>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Auth></Auth>
+      </Modal>
+
+      <>
+        <User avatar={{text: username, theme: 'brand'}} description={"id: " + userId} name={username} size="m" style={{display: authorized ? "flex" : "none"}}/>
+        <Button onClick={async () => {
+          await props.auth_manager.vk_exit()
+          navigate("/")
+        } } style={{display: authorized ? "block" : "none"}}>Выход</Button>
+      </>
+    </ElementWrapper>)
 }
 
 export default Header

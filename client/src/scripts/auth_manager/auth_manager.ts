@@ -1,28 +1,37 @@
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 let instance;
 
 class AuthManager {
   __serverURL = ""
+  __eventsURL = ""
 
-  constructor(serverURL: string) {
+  constructor(serverURL: string, eventsURL: string) {
     if (instance)
       throw new Error("Authorizer is singletone")
     instance = this
     this.__serverURL = serverURL
+    this.__eventsURL = eventsURL
   }
 
   getInstance() {
     return instance
   }
 
-  vk_checkIfAuthorized() : boolean {
-    const vkAccessToken = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("vk_access_token="))
-      ?.split("=")[1];
+  async vk_checkIfAuthorized() : Promise<boolean> {
+    const request = this.__serverURL + "/users/is_authorized?auth_origin=vk"
+    const response = await fetch(request, {
+      headers: {
+        'Accept': '*',
+        'Content-Type': 'application/json'
+      },
+      credentials: "include"
+    })
+      .then(response => response.json())
 
-    return !!vkAccessToken
+    console.log(await response)
+    return await response
   }
 
   async vk_getCredentials() : Promise<JSON> {
@@ -50,9 +59,35 @@ class AuthManager {
         .then(response => {
           return response.json()
         })
+        .then(() => {
+          const socket = io(this.__eventsURL);
+          socket.on('connect', async () => {
+            const credentials = await this.vk_getCredentials()
+            socket.emit('logged_in', credentials.username)
+          });
+        })
     }
-
     access_response();
+  }
+
+  async vk_exit() {
+    const request = this.__serverURL + "/users/exit?auth_origin=vk"
+    const response = await fetch(request, {
+      headers: {
+        'Accept': '*',
+        'Content-Type': 'application/json'
+      },
+      credentials: "include"
+    })
+      .then(response => {
+        return response.json()
+      })
+      .then((response) => {
+        const socket = io(this.__eventsURL);
+        socket.on('connect', async () => {
+          socket.emit('logged_off', response.username)
+        });
+      })
   }
 }
 

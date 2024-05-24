@@ -10,7 +10,7 @@ export type NewsControlsProps = {
 function NewsControls(props: NewsControlsProps) {
   const [isAbleToWrite, setWriteAbility] = useState(false)
   const request = async () => {
-    if (props.auth_manager.vk_checkIfAuthorized()) {
+    if (await props.auth_manager.vk_checkIfAuthorized()) {
       const credentials = await props.auth_manager.vk_getCredentials()
       if (credentials.is_active && credentials.group == 1)
         setWriteAbility(true)

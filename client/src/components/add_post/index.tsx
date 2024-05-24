@@ -12,13 +12,17 @@ import "./index.css";
 import content from "../../modules/common/content";
 import { Simulate } from "react-dom/test-utils";
 import submit = Simulate.submit;
+import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 export type AddPostProps = {
-  serverURL: string
+  serverURL: string,
+  eventsURL: string,
   auth_manager: AuthManager
 }
 
 function AddPost(props: AddPostProps) {
+  const navigate = useNavigate();
   const [pictureLink, setPictureLink] = useState("")
   const [userId, setUserId] = useState(0);
 
@@ -58,10 +62,17 @@ function AddPost(props: AddPostProps) {
       },
       body: JSON.stringify(submitData)})
       .then((response) => response.json())
+      .then((response) => {
+        const socket = io(props.eventsURL);
+        socket.on('connect', async () => {
+          socket.emit('added_post', JSON.stringify(response))
+        });
+      })
+      .then(() => navigate("/"))
   }
 
   const request = async () => {
-    if (props.auth_manager.vk_checkIfAuthorized()) {
+    if (await props.auth_manager.vk_checkIfAuthorized()) {
       const credentials = await props.auth_manager.vk_getCredentials();
       setUserId(credentials.id);
     }

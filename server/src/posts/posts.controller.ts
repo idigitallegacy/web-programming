@@ -19,6 +19,8 @@ import { Response } from "express";
 import { writeFile, readFile } from "fs";
 import { join } from "path";
 import * as bcrypt from "bcrypt";
+import { EventsModule } from "../events/events.module";
+import * as events from "events";
 
 @ApiBearerAuth()
 @ApiTags("Posts")

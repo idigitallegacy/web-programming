@@ -7,9 +7,10 @@ import AuthManager from "./scripts/auth_manager/auth_manager.ts";
 import AddPost from "./components/add_post";
 
 function App() {
-  let environment = import.meta.env.VITE_ENVIRONMENT
+  const environment = import.meta.env.VITE_ENVIRONMENT
 
-  let server = "http://localhost:3000/api"
+  const server = "http://localhost:3000/api"
+  const events = "http://localhost:3000"
 
   // switch (environment) {
   //   case "DEV" : {
@@ -22,15 +23,15 @@ function App() {
   //   }
   // }
 
-  const authManager = new AuthManager(server)
+  const authManager = new AuthManager(server, events)
 
   return (
     <>
       <Routes>
-        <Route path='/' element={ <Home auth_manager={authManager} serverURL={server} /> }></Route>
-        <Route path='/about' element={<About />}></Route>
+        <Route path='/' element={ <Home auth_manager={authManager} serverURL={server} eventsURL={events} /> }></Route>
+        <Route path='/about' element={<About serverURL={server} auth_manager={authManager} />}></Route>
         <Route path='/post' element={<Post serverURL={server} auth_manager={authManager} />}></Route>
-        <Route path='/add_post' element={<AddPost serverURL={server} auth_manager={authManager} />}></Route>
+        <Route path='/add_post' element={<AddPost serverURL={server} auth_manager={authManager} eventsURL={events} />}></Route>
       </Routes>
     </>
   )
