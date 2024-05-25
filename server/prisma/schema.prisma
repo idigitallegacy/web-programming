@@ -8,24 +8,13 @@ datasource db {
 }
 
 model posts {
-  id           Int        @id @default(autoincrement())
-  picture_link String?    @db.VarChar(1024)
-  title        String     @db.VarChar(100)
-  date         DateTime   @db.Date
+  id           Int      @id @default(autoincrement())
+  picture_link String?  @db.VarChar(1024)
+  title        String   @db.VarChar(100)
+  date         DateTime @db.Date
   author_id    Int?
-  body         String     @db.VarChar(4194304)
-  comments     comments[]
-  users        users?     @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model user_contacts {
-  id      Int     @id @default(autoincrement())
-  user_id Int?
-  email   String? @db.VarChar(100)
-  phone   String? @db.VarChar(20)
-  phone2  String? @db.VarChar(20)
-  address String? @db.VarChar(200)
-  users   users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  body         String   @db.VarChar(4194304)
+  users        users?   @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model user_groups {
@@ -35,24 +24,12 @@ model user_groups {
 }
 
 model users {
-  id            Int             @id @default(autoincrement())
-  username      String          @unique @db.VarChar(25)
-  is_active     Boolean?        @default(true)
-  group         Int?
-  password      String?         @db.VarChar(255)
-  picture_link  String?         @db.VarChar(1024)
-  comments      comments[]
-  posts         posts[]
-  user_contacts user_contacts[]
-  user_groups   user_groups?    @relation(fields: [group], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model comments {
-  id     Int      @id @default(autoincrement())
-  post   Int
-  author Int
-  date   DateTime @db.Date
-  text   String   @db.VarChar(1000)
-  users  users    @relation(fields: [author], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  posts  posts    @relation(fields: [post], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int          @id @default(autoincrement())
+  username     String       @unique @db.VarChar(25)
+  is_active    Boolean?     @default(true)
+  group        Int?
+  password     String?      @db.VarChar(255)
+  picture_link String?      @db.VarChar(1024)
+  posts        posts[]
+  user_groups  user_groups? @relation(fields: [group], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

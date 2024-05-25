@@ -53,7 +53,7 @@ export class PostsController {
   }
 
   @Get("range/:skip/:take")
-  @ApiOperation({ summary: "Get post by id" })
+  @ApiOperation({ summary: "Get posts range" })
   async findRange(@Param("skip") skip: number, @Param("take") take: number): Promise<posts[] | null> {
     return this.prisma.posts.findMany({
       skip: Number(skip),
@@ -67,7 +67,7 @@ export class PostsController {
   }
 
   @Get("picture")
-  @ApiOperation({ summary: "Get post by id" })
+  @ApiOperation({ summary: "Get post picture" })
   async getPicture(@Res() response: Response, @Query('file_path') file_path: string): Promise<Buffer | null> {
     readFile(file_path, (err, data) => {
       if (err) {

@@ -1,0 +1,53 @@
+@startuml
+'https://plantuml.com/deployment-diagram
+left to right direction
+
+node "User device"{
+node "Web browser"{
+}
+}
+
+node "Web worker on Render.com" {
+node "NodeJS 18" {
+component "Express JS"
+component "Vite"
+component "Prisma"
+artifact "React Framework"
+artifact "Nest Framework"
+circle "Socket.io / TCP"
+circle "WebServer / TCP"
+}
+}
+
+node "Managed PotgreSQL server on Render.com" {
+node "PostgreSQL Server" {
+database "database"
+}
+}
+
+node "VK OAuth 2.0" {
+node "VK Auth API" {
+component "VK Backend"
+circle "Web Server / TCP" as WS
+}
+}
+
+"Web browser" --( "WebServer / TCP" : "HTTPS"
+"Web browser"  --( "Socket.io / TCP" : "WSS"
+
+"Socket.io / TCP" -- "Vite"
+"Socket.io / TCP" -- "Express JS"
+"WebServer / TCP" -- "Vite"
+"Vite" ..> "React Framework"
+
+"React Framework" -- "Express JS" : "HTTP"
+"Express JS" ..> "Nest Framework"
+
+"Nest Framework" ..> "Prisma"
+"Nest Framework" --( WS : "HTTPS"
+WS -- "VK Backend"
+
+
+"Prisma" -- "database" : "ODBC"
+
+@enduml

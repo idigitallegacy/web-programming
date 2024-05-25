@@ -35,12 +35,14 @@ export class UsersController {
 
   @Get("all")
   @ApiOperation({ summary: "Get all users" })
+  @ApiResponse({ status: 200, description: "Successfully extracted all users" })
   async findAll(): Promise<users[] | null> {
     return await this.prisma.users.findMany();
   }
 
   @Get("/id/:id")
   @ApiOperation({ summary: "Get user by id" })
+  @ApiResponse({ status: 200, description: "Found one or not found at all" })
   async findById(@Param("id") id: number): Promise<users | null> {
     return await this.prisma.users.findUnique({
       where: {
@@ -50,7 +52,8 @@ export class UsersController {
   }
 
   @Get("/username/:username")
-  @ApiOperation({ summary: "Get user by id" })
+  @ApiOperation({ summary: "Get user by username" })
+  @ApiResponse({ status: 200, description: "Found one or not found at all" })
   async findByUsername(@Param("username") username: string): Promise<users | null> {
     return await this.prisma.users.findUnique({
       where: {
@@ -60,7 +63,8 @@ export class UsersController {
   }
 
   @Get("/is_authorized?")
-  @ApiOperation({ summary: "Get user by id" })
+  @ApiOperation({ summary: "Check if user authorized (requires cookies)" })
+  @ApiResponse({ status: 200, description: "Successfully checked" })
   async checkIfAuthorized(@Req() request: Request, @Res() response: Response, @Query("auth_origin") auth_origin: string) {
     console.log(request.cookies)
 
@@ -90,7 +94,8 @@ export class UsersController {
   }
 
   @Get("/exit?")
-  @ApiOperation({ summary: "Get user by id" })
+  @ApiOperation({ summary: "Unauthorize user (requires cookies)" })
+  @ApiResponse({ status: 200, description: "Successfully unauthorized" })
   async exit(@Req() request: Request, @Res() response: Response, @Query("auth_origin") auth_origin: string) {
     switch (auth_origin) {
       case "vk" : {
@@ -126,6 +131,9 @@ export class UsersController {
   }
 
   @Get("authorize?")
+  @ApiOperation({ summary: "Authorize user (requires cookies)" })
+  @ApiResponse({ status: 200, description: "Successfully authorized" })
+  @ApiResponse({ status: 400, description: "Bad request or VK error" })
   async authorize(@Req() request: Request, @Res() response: Response, @Query("method") method: string, @Query("token") token?: string, @Query("uuid") uuid?: string, @Query("access_token") access_token?: string) {
     switch (method) {
       case "vk": {
@@ -150,7 +158,7 @@ export class UsersController {
             console.log(exchangedToken.error.error_msg)
           }
 
-          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in, domain: "web-y25-makarov.onrender.com"});
+          response.cookie("vk_access_token", exchangedToken.response.access_token, { maxAge: exchangedToken.response.expires_in});
 
           let user = await this.prisma.users.findUnique({
             where: {
@@ -264,7 +272,7 @@ export class UsersController {
   }
 
   @Put("unblock/:id")
-  @ApiOperation({ summary: "Block user by id" })
+  @ApiOperation({ summary: "Unblock user by id" })
   @ApiResponse({ status: 200, description: "Successfully blocked" })
   async unblock(@Param("id") id: number): Promise<users | null> {
     return await this.prisma.users.update({
